@@ -1,7 +1,7 @@
 import React from "react";
 import CrudTableRow from "./CrudTableRow";
 
-export default function CrudTable({ data }) {
+export default function CrudTable({ data, setDataToEdit, deleteData }) {
   return (
     <div>
       <h3>Tabla de Datos</h3>
@@ -19,7 +19,14 @@ export default function CrudTable({ data }) {
               <td colSpan="3">Sin Datos</td>
             </tr>
           ) : (
-            data.map((el) => <CrudTableRow key={el.id} el={el} />)
+            data.map((el) => (
+              <CrudTableRow
+                key={el.id}
+                el={el}
+                setDataToEdit={setDataToEdit}
+                deleteData={deleteData}
+              />
+            ))
           )}
         </tbody>
       </table>

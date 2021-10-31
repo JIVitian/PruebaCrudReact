@@ -17,6 +17,11 @@ export default function CrudForm({
 }) {
   const [form, setForm] = useState(initialForm);
 
+  // Si cambia dataToEdit, cambiamos el contenido de los inputs
+  useEffect(() => {
+    setForm(dataToEdit ?? initialForm);
+  }, [dataToEdit]);
+
   const handleChange = (e) => {
     // Se agregan los estados mediante el usuario vaya activando los inputs
     setForm({
@@ -49,7 +54,7 @@ export default function CrudForm({
 
   return (
     <div>
-      <h3>Agregar Nuevo Caballero</h3>
+      <h3>{dataToEdit ? "Editar Caballero" : "Agregar Nuevo Caballero"}</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
