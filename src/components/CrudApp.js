@@ -30,19 +30,28 @@ const initialDB = [
   },
 ];
 
+const localDB = JSON.parse(localStorage.getItem("zodiaco")) ?? initialDB;
+
 export default function CrudApp() {
-  const [db, setDb] = useState(initialDB);
+  const [db, setDb] = useState(localDB);
   const [dataToEdit, setDataToEdit] = useState(null);
+
+  const saveLocal = (data) => {
+    localStorage.setItem("zodiaco", JSON.stringify(data));
+  };
 
   // Crea un nuevo registro en la "Base de datos"
   const createData = (data) => {
     data.id = Date.now();
-    setDb([...db, data]);
+    const newData = [...db, data];
+    setDb(newData);
+    saveLocal(newData);
   };
 
   const updateData = (data) => {
     let newData = db.map((el) => (el.id === data.id ? data : el));
     setDb(newData);
+    saveLocal(newData);
   };
 
   const deleteData = (id) => {
@@ -53,6 +62,7 @@ export default function CrudApp() {
     if (isDelete) {
       let newData = db.filter((el) => el.id !== id);
       setDb(newData);
+      saveLocal(newData);
     } else {
       return;
     }
