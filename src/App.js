@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <h1>Pruebas con React</h1>
       <CrudApp />
+      <hr />
     </div>
   );
 }
