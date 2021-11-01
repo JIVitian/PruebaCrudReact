@@ -9,7 +9,7 @@ export const helpHttp = () => {
     const controller = new AbortController();
     options.signal = controller.signal;
 
-    options.method ??= "GET";
+    options.method = options.method || "GET";
     options.headers = options.headers
       ? { ...defaultHeader, ...options.headers }
       : defaultHeader;
@@ -25,15 +25,15 @@ export const helpHttp = () => {
     setTimeout(() => controller.abort, 3000);
 
     return fetch(endpoint, options)
-      .then((res) => {
+      .then((res) =>
         res.ok
           ? res.json()
           : Promise.reject({
               err: true,
               status: res.status || "00",
               satusText: res.satusText || "Ocurrió un error",
-            });
-      })
+            })
+      )
       .catch((err) => err);
   };
 
