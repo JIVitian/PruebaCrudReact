@@ -6,22 +6,15 @@ export default function CrudApi() {
   const [db, setDb] = useState([]);
   const [dataToEdit, setDataToEdit] = useState(null);
 
-  const saveLocal = (data) => {
-    localStorage.setItem("zodiaco", JSON.stringify(data));
-  };
-
   // Crea un nuevo registro en la "Base de datos"
   const createData = (data) => {
     data.id = Date.now();
-    const newData = [...db, data];
-    setDb(newData);
-    saveLocal(newData);
+    setDb([...db, data]);
   };
 
   const updateData = (data) => {
     let newData = db.map((el) => (el.id === data.id ? data : el));
     setDb(newData);
-    saveLocal(newData);
   };
 
   const deleteData = (id) => {
@@ -32,7 +25,6 @@ export default function CrudApi() {
     if (isDelete) {
       let newData = db.filter((el) => el.id !== id);
       setDb(newData);
-      saveLocal(newData);
     } else {
       return;
     }
