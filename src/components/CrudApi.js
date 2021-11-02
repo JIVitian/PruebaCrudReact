@@ -40,8 +40,10 @@ export default function CrudApi() {
     };
 
     api.post(url, options).then((res) => {
-      if (!res.err) setDb([...db, res]);
-      else setError(res);
+      if (!res.err) {
+        setDb([...db, res]);
+        setError(null);
+      } else setError(res);
     });
     setDb([...db, data]);
   };
@@ -59,6 +61,7 @@ export default function CrudApi() {
       if (!res.err) {
         let newData = db.map((el) => (el.id === data.id ? data : el));
         setDb(newData);
+        setError(null);
       } else setError(res);
     });
   };
@@ -79,6 +82,7 @@ export default function CrudApi() {
         if (!res.err) {
           let newData = db.filter((el) => el.id !== id);
           setDb(newData);
+          setError(null);
         } else setError(res);
       });
     } else {

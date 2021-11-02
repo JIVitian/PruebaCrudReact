@@ -7,3 +7,5 @@
 * Siempre es conveniente tener un AbortController por si se cae el servidor.
 
 * Es recomendable que enviemos las opciones de la peticion desde el front y no ponerlos por defecto en el back.
+
+* Cuando necesite hacer una autenticación, me conviene poner el caso valido en el if, todos los demas casos caen en el else.
