@@ -64,13 +64,23 @@ export default function CrudApi() {
   };
 
   const deleteData = (id) => {
+    let endpoint = `${url}/${id}`;
+
     let isDelete = window.confirm(
       `¿Está seguro de eliminar el registro con el id = ${id}?`
     );
 
     if (isDelete) {
-      let newData = db.filter((el) => el.id !== id);
-      setDb(newData);
+      let options = {
+        headers: { "content-type": "application/json" },
+      };
+
+      api.del(endpoint, options).then((res) => {
+        if (!res.err) {
+          let newData = db.filter((el) => el.id !== id);
+          setDb(newData);
+        } else setError(res);
+      });
     } else {
       return;
     }
