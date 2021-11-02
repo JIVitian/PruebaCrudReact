@@ -22,7 +22,7 @@ export const helpHttp = () => {
 
     // Si no recibo respuesta del servidor en 3 segundos, la peticion se aborta
     // Luego de esto, se habilita el catch del controller
-    setTimeout(() => controller.abort, 3000);
+    setTimeout(() => controller.abort(), 3000);
 
     return fetch(endpoint, options)
       .then((res) =>
@@ -31,7 +31,7 @@ export const helpHttp = () => {
           : Promise.reject({
               err: true,
               status: res.status || "00",
-              satusText: res.satusText || "Ocurrió un error",
+              statusText: res.statusText || "Ocurrió un error",
             })
       )
       .catch((err) => err);

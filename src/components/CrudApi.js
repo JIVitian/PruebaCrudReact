@@ -19,21 +19,30 @@ export default function CrudApi() {
 
     api.get(url).then((res) => {
       console.log(res);
-      if (!res.err) {
-        setDb(res);
-        setError(null);
-      } else {
-        setDb(null);
-        setError(res.err);
-      }
+
+      setDb(!res.err ? res : null);
+      setError(!res.err ? null : res);
 
       setLoading(false);
     });
-  }, []);
+  }, [url]);
+  // Si pusiera la constante api en la dependencia, se produciría un loop infinito llamando a la funcion que guarda la constante
 
-  // Crea un nuevo registro en la "Base de datos"
+  // Necesito consultar el metodo POST de mi helper
   const createData = (data) => {
     data.id = Date.now();
+
+    let options = {
+      body: data,
+      headers: { "content-type": "application/json" },
+    };
+    // Debo agregar en el body el tipo de contenido que va a enviar la petición
+    // sino me guardará solo el id en el servidor.
+    api.post(url, options).then((res) => {
+      console.log(res);
+      if (!res.err) setDb([...db, res]);
+      else setError(res);
+    });
     setDb([...db, data]);
   };
 
@@ -44,7 +53,7 @@ export default function CrudApi() {
 
   const deleteData = (id) => {
     let isDelete = window.confirm(
-      `Está seguro de eliminar el registro con el id = ${id}?`
+      `¿Está seguro de eliminar el registro con el id = ${id}?`
     );
 
     if (isDelete) {
@@ -66,7 +75,12 @@ export default function CrudApi() {
           setDataToEdit={setDataToEdit}
         />
         {loading && <Loader />}
-        {error && <Message />}
+        {error && (
+          <Message
+            message={`Error ${error.status}: ${error.statusText}`}
+            bgColor="#dc3545"
+          />
+        )}
         {db && (
           <CrudTable
             data={db}
