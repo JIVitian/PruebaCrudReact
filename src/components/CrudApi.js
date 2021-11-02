@@ -32,23 +32,35 @@ export default function CrudApi() {
   const createData = (data) => {
     data.id = Date.now();
 
+    // En este caso, debo agregar en el body el tipo de contenido que va a enviar la petición
+    // sino me guardará solo el id en el servidor. Esto dependerá de la API que consultemos.
     let options = {
       body: data,
       headers: { "content-type": "application/json" },
     };
-    // Debo agregar en el body el tipo de contenido que va a enviar la petición
-    // sino me guardará solo el id en el servidor.
+
     api.post(url, options).then((res) => {
-      console.log(res);
       if (!res.err) setDb([...db, res]);
       else setError(res);
     });
     setDb([...db, data]);
   };
 
+  // Para actualizar los datos en el servidor, necesito hacer una petición del tipo PUT
   const updateData = (data) => {
-    let newData = db.map((el) => (el.id === data.id ? data : el));
-    setDb(newData);
+    let endpoint = `${url}/${data.id}`;
+
+    let options = {
+      body: data,
+      headers: { "content-type": "application/json" },
+    };
+
+    api.put(endpoint, options).then((res) => {
+      if (!res.err) {
+        let newData = db.map((el) => (el.id === data.id ? data : el));
+        setDb(newData);
+      } else setError(res);
+    });
   };
 
   const deleteData = (id) => {
